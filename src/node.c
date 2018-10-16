@@ -12,11 +12,11 @@ node_t *new_node(void *itm) {
 	return nw;
 }
 
-void destroy_node(node_t **nd, void (*destroy_item)(void **)) {
+void destroy_node(node_t **nd, void (*destroy_item)(void *)) {
 	if((*nd) != NULL) {
 		destroy_node(&(*nd)->nxt, destroy_item);
 		if(destroy_item != NULL) {
-			destroy_item(&(*nd)->itm);
+			destroy_item((*nd)->itm);
 		}
 		free((*nd));
 		(*nd) = NULL;

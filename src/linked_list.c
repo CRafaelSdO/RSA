@@ -15,7 +15,7 @@ linked_list_t *new_list() {
 	return nw;
 }
 
-void destroy_list(linked_list_t **lst, void (*destroy_item)(void **)) {
+void destroy_list(linked_list_t **lst, void (*destroy_item)(void *)) {
 	if((*lst) != NULL) {
 		destroy_node(&(*lst)->hd, destroy_item);
 		free((*lst));

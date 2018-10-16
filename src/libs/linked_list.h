@@ -10,7 +10,7 @@ typedef long long int S64_t;
 
 linked_list_t *new_list();
 
-void destroy_list(linked_list_t **, void (void **));
+void destroy_list(linked_list_t **, void (void *));
 
 void insert(void *, S64_t, linked_list_t *);
 
