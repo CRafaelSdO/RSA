@@ -4,8 +4,7 @@
 #include <stdbool.h>
 
 #define DBG if(
-#define WTH )
-#define PRNT printf(
+#define PRNT ) printf(
 #define GBD );
 
 bool assert(int, int);

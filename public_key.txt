@@ -1,0 +1,1 @@
+Chave Pública = (697, 13)
