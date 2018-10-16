@@ -1,3 +1,6 @@
 build
 /.vscode
 material
+public_key.txt
+decrypted_message.txt
+encrypted_message.txt
