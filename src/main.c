@@ -1,13 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "libs/prime_numbers.h"
+#include "libs/linked_list.h"
 #include "../DEBUG/debug.h"
+
+S64_t char_to_int(char);
+
+S64_t int_pow(S64_t, S64_t);
 
 int main(int argc, char *argv[]) {
 	int state = 0;
+
+	S64_t p, q, e, n, phi;
 	bool next;
-	FILE *public_key;
-	s64_t p, q, e, n, fi;
+	FILE *text_file = NULL;
+
+	char tmp;
+	S64_t *tmpPtr = NULL;
+	linked_list_t *string = NULL;
 	while(state != -1) {
 		system("clear");
 		switch (state) {
@@ -25,7 +35,7 @@ int main(int argc, char *argv[]) {
 				q = 0;
 				e = 0;
 				n = 0;
-				fi = 0;
+				phi = 0;
 				next = false;
 				while(!next){
 					printf("Digite p (deve ser primo): ");
@@ -49,14 +59,14 @@ int main(int argc, char *argv[]) {
 
 				next = false;
 				n = p * q;
-				fi = (p - 1) * (q - 1);
+				phi = (p - 1) * (q - 1);
 
 				while(!next){
-					printf("Digite e (deve ser co-primo de %lld e maior que 1): ", fi);
+					printf("Digite e (deve ser co-primo de %lld e maior que 1): ", phi);
 					scanf("%lld", &e);
-					next = are_they_co_primes(fi, e);
+					next = are_they_co_primes(phi, e);
 					if(!next) {
-						printf("\n\t%lld Não é co-primo de %lld!\n\tTente novamente...\n\n", e, fi);
+						printf("\n\t%lld Não é co-primo de %lld!\n\tTente novamente...\n\n", e, phi);
 					} else if(e == 1) {
 						printf("\n\te == 1!\n\tTente novamente...\n\n");
 						next = false;
@@ -66,19 +76,41 @@ int main(int argc, char *argv[]) {
 				getchar();
 				
 				printf("\n\tSalvando Chave Pública...\n");
-
-				public_key = fopen("public_key.txt", "w");
-				fprintf(public_key, "Chave Pública = (%lld, %lld)", n, e);
-				fclose(public_key);
-
+				text_file = fopen("public_key.txt", "w");
+				fprintf(text_file, "Chave Pública = (%lld, %lld)", n, e);
+				fclose(text_file);
 				printf("\tPronto!\n");
+
 				printf("\nPressione qualquer tecla para continuar...");
 				getchar();
 
 				state = 0;
 				break;
 			case 2:
-				printf("Opção 2");
+				string = new_list();
+				printf("Digite a mensagem que será criptografada: ");
+				scanf("%c", &tmp);
+				while(tmp != '\n') {
+					tmpPtr = calloc(1, sizeof(S64_t));
+					(*tmpPtr) = char_to_int(tmp);
+					insert((void *) tmpPtr, length(string), string);
+					scanf("%c", &tmp);
+				}
+
+				printf("Digite a Chave pública: ");
+				scanf("%lld%lld", &n, &e);
+				getchar();
+
+				printf("\n\tSalvando Mensagem Criptografada...\n");
+				text_file = fopen("encrypted_messege.txt", "w");
+				for(S64_t i = 0; i < length(string); i++) {
+					tmpPtr = get_item_of_index(i, string);
+					fprintf(text_file, "%lld ", int_pow((*tmpPtr), e) % n);
+				}
+				fclose(text_file);
+				printf("\tPronto!\n");
+
+				printf("\nPressione qualquer tecla para continuar...");
 				getchar();
 				state = 0;
 				break;
@@ -97,4 +129,24 @@ int main(int argc, char *argv[]) {
 	}
 	
 	return 0;
+}
+
+S64_t char_to_int(char m) {
+	if(m >= 'A' && m <= 'Z') {
+		return (S64_t) m - 65;
+	} else if(m >= 'a' && m <= 'z') {
+		return (S64_t) m - 97;
+	} else if(m == ' ') {
+		return 26;
+	} else {
+		return -1;
+	}
+}
+
+S64_t int_pow(S64_t b, S64_t e) {
+	S64_t r = b;
+	for(S64_t i = 2; i <= e; i++) {
+		r *= b;
+	}
+	return r;
 }
