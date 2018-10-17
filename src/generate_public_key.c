@@ -7,7 +7,7 @@ int generate_public_key() {
 	S64_t n = 0;
 	S64_t phi = 0;
 	bool next = false;
-	FILE *text_file = NULL;
+	FILE *stream = NULL;
 
 	while (!next) {
 		printf("Digite p (deve ser primo): ");
@@ -49,9 +49,11 @@ int generate_public_key() {
 	getchar();
 
 	printf("\n\tSalvando Chave Pública...\n");
-	text_file = fopen("public_key.txt", "w");
-	fprintf(text_file, "Chave Pública = (%lld, %lld)", n, e);
-	fclose(text_file);
+	stream = fopen("key.pk", "wb");
+	fwrite(&n, sizeof(S64_t), 1, stream);
+	fwrite(&e, sizeof(S64_t), 1, stream);
+	//fprintf(text_file, "Chave Pública = (%lld, %lld)", n, e);
+	fclose(stream);
 	printf("\tPronto!\n");
 
 	printf("\nPressione qualquer tecla para continuar...");

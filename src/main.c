@@ -13,8 +13,8 @@ int main(int argc, char *argv[]) {
 			case 0:
 				printf("O que deseja fazer?\n\n");
 				printf("\t1. Gerar chave pública.\n");
-				printf("\t2. Criptografar mensagem.\n");
-				printf("\t3. Descriptografar mensagem.\n");
+				printf("\t2. Criptografar arquivo.\n");
+				printf("\t3. Descriptografar arquivo.\n");
 				printf("\nDigite o número da opção desejada (use -1 para sair): ");
 				scanf("%d", &state);
 				getchar();

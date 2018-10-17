@@ -1,18 +1,19 @@
 #include "libs/decrypt_message.h"
 
-char int_to_char(S64_t);
-
 int decrypt_message() {
 	S64_t p = 0;
 	S64_t q = 0;
 	S64_t e = 0;
-	S64_t d = 0;
 	S64_t n = 0;
 	S64_t phi = 0;
-	S64_t *tmpPtr = NULL;
-	FILE *text_file = NULL;
+	S64_t d = 0;
+	U8_t byte = 0;
+	S64_t lInt = 0;
+	S8_t *tmp = (S8_t *) calloc(1, sizeof(S8_t));
 	bool next = false;
-	linked_list_t *lst = NULL;
+	FILE *inputFile = NULL;
+	FILE *outputFile = NULL;
+	linked_list_t *string = NULL;
 
 	while (!next) {
 		printf("Digite p (deve ser primo): ");
@@ -53,40 +54,44 @@ int decrypt_message() {
 	getchar();
 
 	d = modular_inverse(e, phi);
+	printf("d = %lld\n", d);
 
-	lst = new_list();
-	text_file = fopen("encrypted_message.txt", "r");
-	while (!feof(text_file)) {
-		tmpPtr = calloc(1, sizeof(S64_t));
-		fscanf(text_file, "%lld", tmpPtr);
-		if (!feof(text_file)) {
-			insert((void *)tmpPtr, length(lst), lst);
-		}
+	string = new_list();
+	printf("Digite o caminho para o arquivo que será descriptografado: ");
+	scanf("%c", tmp);
+	while ((*tmp) != '\n') {
+		insert((void *) tmp, length(string), string);
+		tmp = (S8_t *) calloc(1, sizeof(S8_t));
+		scanf("%c", tmp);
 	}
-	fclose(text_file);
 
-	printf("\n\tSalvando Mensagem Descriptografada...\n");
-	text_file = fopen("decrypted_message.txt", "w");
-	for (S64_t i = 0; i < length(lst); i++) {
-		tmpPtr = get_item_of_index(i, lst);
-		fprintf(text_file, "%c", int_to_char(modular_pow((*tmpPtr), d, n)));
+	S8_t inputFileName[length(string) + 1];
+	int i = 0;
+	while(!is_empty(string)) {
+		tmp = (S8_t *) remove_by_index(0, string);
+		inputFileName[i] = (*tmp);
+		i++;
 	}
-	fclose(text_file);
+	inputFileName[i] = '\0';
+	S8_t outputFileName[strlen(inputFileName) - 4];
+	strcpy(outputFileName, inputFileName);
+	outputFileName[strlen(inputFileName) - 4] = '\0';
+
+	printf("\n\tSalvando arquivo descriptografado...\n");
+	inputFile = fopen(inputFileName, "rb");
+	outputFile = fopen(outputFileName, "wb");
+	fread(&lInt, sizeof(S64_t), 1, inputFile);
+	while(!feof(inputFile)) {
+		byte = modular_pow(lInt, d, n);
+		fwrite(&byte, sizeof(U8_t), 1, outputFile);
+		fread(&lInt, sizeof(S64_t), 1, inputFile);
+	}
+	fclose(inputFile);
+	fclose(outputFile);
 	printf("\tPronto!\n");
-	destroy_list(&lst, (*free));
 
 	printf("\nPressione qualquer tecla para continuar...");
 	getchar();
 
 	return 0;
-}
-
-char int_to_char(S64_t c) {
-	if(c >= 0 && c <= 25) {
-		return (char) c + 97;
-	} else if(c == 26) {
-		return ' ';
-	} else {
-		return -1;
-	}
 }

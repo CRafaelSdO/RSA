@@ -4,3 +4,6 @@ material
 public_key.txt
 decrypted_message.txt
 encrypted_message.txt
+*.pk
+*.rsa
+test*
