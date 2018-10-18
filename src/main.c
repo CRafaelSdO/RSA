@@ -29,8 +29,8 @@ int main(int argc, char *argv[]) {
 				state = decrypt_message();
 				break;
 			default:
-				printf("Opão inválida!\n");
-				printf("Pressione qualquer tecla para continuar...");
+				printf("\n\tOpão inválida!\n");
+				printf("\nPressione qualquer tecla para continuar...");
 				getchar();
 				state = 0;
 				break;

@@ -48,25 +48,33 @@ int encrypt_message() {
 	publicKeyFileName[i] = '\0';
 	destroy_list(&string, (*free));
 
-	printf("\n\tPegando Chave Pública...");
+	printf("\n\tPegando Chave Pública...\n");
 	inputFile = fopen(publicKeyFileName, "rb");
-	fread(&n, sizeof(S64_t), 1, inputFile);
-	fread(&e, sizeof(S64_t), 1, inputFile);
-	fclose(inputFile);
+	if(inputFile == NULL) {
+		printf("\n\tErro: Arquivo \"%s\" não encontrado.\n", publicKeyFileName);
+	} else {
+		fread(&n, sizeof(S64_t), 1, inputFile);
+		fread(&e, sizeof(S64_t), 1, inputFile);
+		fclose(inputFile);
 
-	printf("\n\tSalvando arquivo criptografado...\n");
-	inputFile = fopen(inputFileName, "rb");
-	outputFile = fopen(outputFileName, "wb");
-	fread(&byte, sizeof(U8_t), 1, inputFile);
-	while(!feof(inputFile)) {
-		lInt = modular_pow(byte, e, n);
-		fwrite(&lInt, sizeof(S64_t), 1, outputFile);
-		fread(&byte, sizeof(U8_t), 1, inputFile);
+		printf("\tSalvando arquivo criptografado...\n");
+		inputFile = fopen(inputFileName, "rb");
+		if(inputFile == NULL) {
+			printf("\n\tErro: Arquivo \"%s\" não encontrado.\n", inputFileName);
+		} else {
+			outputFile = fopen(outputFileName, "wb");
+			fread(&byte, sizeof(U8_t), 1, inputFile);
+			while(!feof(inputFile)) {
+				lInt = modular_pow(byte, e, n);
+				fwrite(&lInt, sizeof(S64_t), 1, outputFile);
+				fread(&byte, sizeof(U8_t), 1, inputFile);
+			}
+			fclose(inputFile);
+			fclose(outputFile);
+			printf("\tPronto!\n");
+		}
 	}
-	fclose(inputFile);
-	fclose(outputFile);
-	printf("\tPronto!\n");
-
+	
 	printf("\nPressione qualquer tecla para continuar...");
 	getchar();
 

@@ -54,7 +54,6 @@ int decrypt_message() {
 	getchar();
 
 	d = modular_inverse(e, phi);
-	printf("d = %lld\n", d);
 
 	string = new_list();
 	printf("Digite o caminho para o arquivo que será descriptografado: ");
@@ -79,16 +78,20 @@ int decrypt_message() {
 
 	printf("\n\tSalvando arquivo descriptografado...\n");
 	inputFile = fopen(inputFileName, "rb");
-	outputFile = fopen(outputFileName, "wb");
-	fread(&lInt, sizeof(S64_t), 1, inputFile);
-	while(!feof(inputFile)) {
-		byte = modular_pow(lInt, d, n);
-		fwrite(&byte, sizeof(U8_t), 1, outputFile);
+	if(inputFile == NULL) {
+		printf("\n\tErro: Arquivo \"%s\" não encontrado.\n", inputFileName);
+	} else {
+		outputFile = fopen(outputFileName, "wb");
 		fread(&lInt, sizeof(S64_t), 1, inputFile);
+		while(!feof(inputFile)) {
+			byte = modular_pow(lInt, d, n);
+			fwrite(&byte, sizeof(U8_t), 1, outputFile);
+			fread(&lInt, sizeof(S64_t), 1, inputFile);
+		}
+		fclose(inputFile);
+		fclose(outputFile);
+		printf("\tPronto!\n");
 	}
-	fclose(inputFile);
-	fclose(outputFile);
-	printf("\tPronto!\n");
 
 	printf("\nPressione qualquer tecla para continuar...");
 	getchar();
