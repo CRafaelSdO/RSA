@@ -16,7 +16,7 @@ int decrypt_message() {
 	linked_list_t *string = NULL;
 
 	while (!next) {
-		printf("Digite p (deve ser primo): ");
+		printf("Digite p (deve ser primo):\n");
 		scanf("%lld", &p);
 		next = is_it_prime(p);
 		if (!next) {
@@ -27,7 +27,7 @@ int decrypt_message() {
 	next = false;
 
 	while (!next) {
-		printf("Digite q (deve ser primo): ");
+		printf("Digite q (deve ser primo):\n");
 		scanf("%lld", &q);
 		next = is_it_prime(q);
 		if (!next) {
@@ -40,7 +40,7 @@ int decrypt_message() {
 	phi = (p - 1) * (q - 1);
 
 	while (!next) {
-		printf("Digite e (deve ser co-primo de %lld e maior que 1): ", phi);
+		printf("Digite e (deve ser co-primo de %lld e maior que 1):\n", phi);
 		scanf("%lld", &e);
 		next = are_they_co_primes(phi, e);
 		if (!next) {
@@ -56,7 +56,7 @@ int decrypt_message() {
 	d = modular_inverse(e, phi);
 
 	string = new_list();
-	printf("Digite o caminho para o arquivo que será descriptografado: ");
+	printf("Digite o caminho para o arquivo que será descriptografado:\n");
 	scanf("%c", tmp);
 	while ((*tmp) != '\n') {
 		insert((void *) tmp, length(string), string);

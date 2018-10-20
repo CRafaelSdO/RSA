@@ -10,7 +10,7 @@ int generate_public_key() {
 	FILE *outputFile = NULL;
 
 	while (!next) {
-		printf("Digite p (deve ser primo): ");
+		printf("Digite p (deve ser primo):\n");
 		scanf("%lld", &p);
 		next = is_it_prime(p);
 		if (!next)
@@ -22,7 +22,7 @@ int generate_public_key() {
 	next = false;
 
 	while (!next) {
-		printf("Digite q (deve ser primo): ");
+		printf("Digite q (deve ser primo):\n");
 		scanf("%lld", &q);
 		next = is_it_prime(q);
 		if (!next) {
@@ -35,7 +35,7 @@ int generate_public_key() {
 	phi = (p - 1) * (q - 1);
 
 	while (!next) {
-		printf("Digite e (deve ser co-primo de %lld e maior que 1): ", phi);
+		printf("Digite e (deve ser co-primo de %lld e maior que 1):\n", phi);
 		scanf("%lld", &e);
 		next = are_they_co_primes(phi, e);
 		if (!next) {
@@ -48,7 +48,7 @@ int generate_public_key() {
 
 	getchar();
 
-	printf("\n\tSalvando Chave Pública...\n");
+	printf("\n\tSalvando Chave Pública em \"key.pk\"...\n");
 	outputFile = fopen("key.pk", "wb");
 	fwrite(&n, sizeof(S64_t), 1, outputFile);
 	fwrite(&e, sizeof(S64_t), 1, outputFile);

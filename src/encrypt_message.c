@@ -10,7 +10,7 @@ int encrypt_message() {
 	FILE *outputFile = NULL;
 	linked_list_t *string = new_list();
 
-	printf("Digite o caminho para o arquivo que será criptografado: ");
+	printf("Digite o caminho para o arquivo que será criptografado:\n");
 	scanf("%c", tmp);
 	while ((*tmp) != '\n') {
 		insert((void *) tmp, length(string), string);
@@ -30,7 +30,7 @@ int encrypt_message() {
 	strcpy(outputFileName, inputFileName);
 	strcat(outputFileName, ".rsa\0");
 
-	printf("Digite o caminho para o arquivo que contem a Chave pública: ");
+	printf("Digite o caminho para o arquivo que contem a Chave pública:\n");
 	scanf("%c", tmp);
 	while ((*tmp) != '\n') {
 		insert((void *) tmp, length(string), string);

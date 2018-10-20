@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 				printf("\t1. Gerar chave pública.\n");
 				printf("\t2. Criptografar arquivo.\n");
 				printf("\t3. Descriptografar arquivo.\n");
-				printf("\nDigite o número da opção desejada (use -1 para sair): ");
+				printf("\nDigite o número da opção desejada (use -1 para sair):\n");
 				scanf("%d", &state);
 				getchar();
 				break;
